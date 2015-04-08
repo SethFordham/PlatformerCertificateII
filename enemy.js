@@ -1,7 +1,7 @@
-var enemy = function() {
+var Enemy = function() {
 	this.image = document.createElement("img")
-	this.pos = new Vector2;
-	this.pos.set(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+	this.pos = new Vector2();
+	this.pos.set(SCREEN_WIDTH * 0.25, SCREEN_HEIGHT/2);
 	
 	this.width = 159;
 	this.height = 163;
@@ -18,4 +18,32 @@ var enemy = function() {
 
 
 
+}
+
+
+
+
+Enemy.prototype.draw = function() {
+	context.save();
+	context.translate(this.pos.x, this.pos.y);
+	context.rotate(this.rotation);
+	context.drawImage(this.image, -this.width/2, -this.height/2);
+	context.restore();
+	
+
+
+}
+Enemy.prototype.update = function(deltaTime) {
+
+
+if ( keyboard.isKeyDown(keyboard.KEY_SPACE)) {
+
+	this.rotation -= deltaTime;
+	}
+	else {
+	
+	this.rotation += deltaTime;
+	
+	}
+	
 }
