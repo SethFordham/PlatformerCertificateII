@@ -39,7 +39,7 @@ var SCREEN_HEIGHT = canvas.height;
 var fps = 0;
 var fpsCount = 0;
 var fpsTime = 0;
-
+//settings for the tileset 
 var LAYER_COUNT = 3;
 var  MAP = {tw:85, th:15}
 var TILE = 35;
@@ -54,7 +54,7 @@ var player = new Player();
 var enemy = new Enemy();
 
 
-
+//setting the tileset picture
 var tileset = document.createElement("img");
 tileset.src = "tileset.png";
 
@@ -90,12 +90,14 @@ function bound(value, min, max) {
 	return value;
 }
 
+
+//these are the layers of the tiles
 var LAYER_BACKGROUND = 0;
 var LAYER_PLATFORMS = 1;
 var LAYER_LADDERS = 2;
 //Use these to change some factors
 var METER = TILE;
-var GRAVITY = METER * 9.8 * 3;
+var GRAVITY = METER * 9.8 * 2;
 var MAXDX = METER * 10;
 var MAXDY = METER * 15;
 var ACCEL = MAXDX * 2;
@@ -178,8 +180,7 @@ function run()
 	drawMap();
 	player.update(deltaTime);
 	player.draw();
-	enemy.update(deltaTime);
-	enemy.draw();
+
 	
 	
 		

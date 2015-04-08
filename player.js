@@ -1,7 +1,10 @@
+//creating the player function 
+
 var Player = function(){
 	this.image = document.createElement("img")
 	this.position = new Vector2();
-	this.position.set(9*TILE, 0*TILE)
+	//setting the spawn of the player on join
+	this.position.set(1*TILE, 11*TILE);
 	
 	this.width = 159;
 	this.height = 163;
@@ -11,7 +14,7 @@ var Player = function(){
 	
 	this.offset = new Vector2();
 	this.offset.set(-55,-87);
-	
+	//leave these alone
 	this.falling = true;
 	this.jumping = false 
 	
@@ -19,7 +22,7 @@ var Player = function(){
 	
 	
 }
-
+//updating the player's movement using delta time and the run function 
 Player.prototype.update = function(deltaTime) 
 {
 	var left = false;
@@ -75,8 +78,8 @@ Player.prototype.update = function(deltaTime)
 	{
 		// clamp at zero to prevent friction from making us jiggle side to side
 		this.velocity.x = 0; 
-	}
-	// we’ll insert code here later
+	}-
+
 	// collision detection
 	// Our collision detection logic is greatly simplified by the fact that the
 	// player is a rectangle and is exactly the same size as a single tile.
@@ -176,7 +179,7 @@ Player.prototype.update = function(deltaTime)
 	
 
 
-
+//drawing the player 
 Player.prototype.draw = function() {
 	context.save();
 	context.translate(this.position.x, this.position.y);

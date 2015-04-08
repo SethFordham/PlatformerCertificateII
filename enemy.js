@@ -1,3 +1,4 @@
+//creating the enemy object
 var Enemy = function() {
 	this.image = document.createElement("img")
 	this.pos = new Vector2();
@@ -22,7 +23,7 @@ var Enemy = function() {
 
 
 
-
+//drawing the enemy
 Enemy.prototype.draw = function() {
 	context.save();
 	context.translate(this.pos.x, this.pos.y);
@@ -33,6 +34,7 @@ Enemy.prototype.draw = function() {
 
 
 }
+//updating the enemy's movements 
 Enemy.prototype.update = function(deltaTime) {
 
 

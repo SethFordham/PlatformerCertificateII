@@ -1,9 +1,11 @@
+//the keyboard function that holds all keycode and corresponding events
 var Keyboard = function() {
 
 var self = this;
 
 	window.addEventListener('keydown', function(evt) {self.onKeyDown(evt);}, false);
 	window.addEventListener('keyup', function(evt) {self.onKeyUp(evt); }, false);
+	//the keys array that holds the keycode's 
 	this.keys = new Array();
 	
 	this.KEY_SPACE = 32;
