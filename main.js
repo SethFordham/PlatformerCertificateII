@@ -49,6 +49,17 @@ var TILESET_SPACING = 2;
 var TILESET_COUNT_X = 14;
 var TILESET_COUNT_Y = 14;
 
+var LEFT = 0;
+var RIGHT = 1;
+var ANIM_IDLE_LEFT = 0;
+var ANIM_JUMP_LEFT = 1;
+var ANIM_WALK_LEFT = 2;
+var ANIM_IDLE_RIGHT = 3;
+var ANIM_JUMP_RIGHT = 4;
+var ANIM_WALK_RIGHT = 5;
+var ANIM_MAX = 6;
+
+
 var keyboard = new Keyboard();
 var player = new Player();
 var enemy = new Enemy();
@@ -71,9 +82,10 @@ function cellAtPixelCoord(layer, x,y) {
 function cellAtTileCoord(layer, tx, ty) {
 	if(tx<0 || tx>=MAP.tw || ty<0)
 		return 1;
-	if(ty>MAP.th)
+	if(ty>=MAP.th)
 		return 0;
-		return cells[layer][ty][tx];
+	
+	return cells[layer][ty][tx];
 }
 function tileToPixel(tile) {
 	return tile * TILE;
@@ -95,21 +107,25 @@ function bound(value, min, max) {
 var LAYER_BACKGROUND = 0;
 var LAYER_PLATFORMS = 1;
 var LAYER_LADDERS = 2;
-//Use these to change some factors
+//Use  hese to change some factors
 var METER = TILE;
-var GRAVITY = METER * 9.8 * 2;
+var GRAVITY = METER * 9.8 * 3;
 var MAXDX = METER * 10;
-var MAXDY = METER * 15;
-var ACCEL = MAXDX * 2;
-var FRICTION = MAXDX * 6;
+var MAXDY = METER * 16;
+var ACCEL = MAXDX * 1;
+var FRICTION = MAXDX * 2;
 var JUMP = METER * 1500;
 
 
 
 
+if (deltaTime = 0.02) {
 
+	deltaTime = 0.02;
 
+}
 
+//call this to draw the tileset/map
 function drawMap() {
  for(var layerIdx=0; layerIdx<LAYER_COUNT; layerIdx++)
  {
@@ -194,7 +210,7 @@ function run()
 		fpsCount = 0;
 	}		
 		
-	// draw the FPS
+	// drawing the FPS bar in the top right hand corner
 	context.fillStyle = "#f00";
 	context.font="14px Arial";
 	context.fillText("FPS: " + fps, 5, 20, 100);
