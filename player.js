@@ -6,7 +6,7 @@ var Player = function(){
 
 	this.sprite = new Sprite("ChuckNorris.png");
 	
-	//a animation is set out like this: this.sprite.buildAnimation(width of sprite sheet, height of sprite sheet, width of individaul sprite, height of individaul sprite, 0.05, [0,1,2,3,4,5,6,7]);
+	//a animation is set out like this: this.sprite.buildAnimation(width of sprite sheet, height of sprite sheet, width of individual sprite, height of individual sprite, 0.05, [0,1,2,3,4,5,6,7]);
 	
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05, [0,1,2,3,4,5,6,7]);//left idle animation
 	
@@ -23,11 +23,14 @@ var Player = function(){
 	
 	this.direction = LEFT;
 	
-		
+	this.deathCount = 0;
+	
+	this.startPos = new Vector2();
+	this.startPos.set(1*TILE, 8*TILE);
 	this.position = new Vector2();
 	//setting the spawn of the player on join
-	this.position.set(1*TILE, 8*TILE);
-	
+	this.position.set(this.startPos.x,this.startPos.y);
+
 	this.width = 159;
 	this.height = 163;
 	this.velocity = new Vector2();
@@ -77,7 +80,7 @@ Player.prototype.update = function(deltaTime)
 {
 
 
-
+	
 	this.sprite.update(deltaTime);
 	var left = false;
 	var right = false;
@@ -109,6 +112,13 @@ Player.prototype.update = function(deltaTime)
 	
 	var colisionPos = this.position.add(collisionOffset);
 	
+	if (player.position < canvas.height) {
+		player.position.set(this.startPos.x,this.startPos.y);
+		
+	
+	
+	
+	}
 
 	if (left)
 		ddx = ddx - ACCEL; // player wants to go left
@@ -253,14 +263,33 @@ Player.prototype.update = function(deltaTime)
 			this.velocity.x = 0; // stop horizontal velocity
 		}
 	}
+	if (this.position.y > MAP.th * TILE + this.height) {
+		this.position.set(1*TILE, 8*TILE);
+		this.velocity.set(0,0);
+		this.deathCount += 1;
+	
+	
+	}
+
+	
 }
 	
 
 
 //drawing the player 
-Player.prototype.draw = function() {
-	this.sprite.draw(context, this.position.x, this.position.y);
+Player.prototype.draw = function(offsetx, offsety) {
+	this.sprite.draw(context, this.position.x - offsetx, this.position.y -offsety);
 
+		context.fillStyle = "black";
+		context.font ="32px Arial";
+		var textToDisplay = "Deaths: " + this.deathCount;
+		context.fillText(textToDisplay, canvas.width - 170, 50);
+		
+		
+
+		
+		
+		
 
 
 

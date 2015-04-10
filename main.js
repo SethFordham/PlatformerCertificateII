@@ -63,6 +63,24 @@ var ANIM_MAX = 6;
 var keyboard = new Keyboard();
 var player = new Player();
 var enemy = new Enemy();
+var timer = 0;
+
+
+
+var bgMusic = new Howl({
+	urls:["background.ogg"],
+	loop:true,
+	buffer:true,
+	volume:0.5
+
+
+
+
+
+});
+
+bgMusic.play();
+
 
 
 //setting the tileset picture
@@ -125,8 +143,10 @@ if (deltaTime = 0.02) {
 
 }
 
+
+
 //call this to draw the tileset/map
-function drawMap() {
+function drawMap(offsetX, offsetY) {
  for(var layerIdx=0; layerIdx<LAYER_COUNT; layerIdx++)
  {
  var idx = 0;
@@ -141,11 +161,18 @@ function drawMap() {
  var tileIndex = level1.layers[layerIdx].data[idx] - 1;
  var sx = TILESET_PADDING + (tileIndex % TILESET_COUNT_X) * (TILESET_TILE + TILESET_SPACING);
  var sy = TILESET_PADDING + (Math.floor(tileIndex / TILESET_COUNT_Y)) * (TILESET_TILE + TILESET_SPACING);
- context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE, x*TILE, (y-1)*TILE, TILESET_TILE, TILESET_TILE);
+ 
+ var dx = x*TILE - offsetX;
+ var dy = (y-1)*TILE - offsetY;
+ 
+ context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE, dx, dy, TILESET_TILE, TILESET_TILE);
  }
  idx++;
  }
  }
+	
+ 
+ 
  }
 
 
@@ -155,6 +182,9 @@ function drawMap() {
 
 
 }
+
+
+
 
 var cells = [];
 function initialize() {
@@ -177,6 +207,9 @@ function initialize() {
 		}
 	}
 	}
+	
+	
+	
 }
 
 
@@ -190,16 +223,62 @@ function run()
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	
 	var deltaTime = getDeltaTime();
+	timer += deltaTime;
 	
 	//context.drawImage(chuckNorris, SCREEN_WIDTH/2 - chuckNorris.width/2, SCREEN_HEIGHT/2 - chuckNorris.height/2);
 	
-	drawMap();
+	var mad = player.deathCount * timer;
+	
+	
+	var scrollX = player.position.x - canvas.width/2 
+	var scrollY = 0;
+	
+	if ( scrollX < 0 )
+		scrollX = 0;
+		
+	if ( scrollX > MAP.tw * TILE - canvas.width )
+		scrollX = MAP.tw * TILE - canvas.width;
+	
+	scrollX += Math.random()*mad + 0.1;
+	scrollY += Math.random()*mad + 0.1;
+	
+	drawMap(scrollX,scrollY);
 	player.update(deltaTime);
-	player.draw();
+	
+	
+	player.draw(scrollX,scrollY);
+	enemy.update(deltaTime);
+	enemy.draw();
+	
+
+	context.fillStyle="black";
+	context.font="32px Arial";
+	var timerText = "Time: " + Math.floor(timer);
+	context.fillText(timerText, 30,40);
 
 	
 	
-		
+	context.fillStyle = "red";
+	
+	context.font="32px Arial"
+	var rageometer = "Rage O' Meter";
+	context.fillText(rageometer, canvas.width/2 - 100, canvas.height/2 -225);
+	context.stroke();
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	context.fillStyle = "red";
+	context.beginPath();
+	context.rect(canvas.width/2-mad/2, 30, mad+1, 31);
+	context.fillRect(canvas.width/2-mad/2, 30, mad, 30);
+	context.stroke();
+	
 	// update the frame counter 
 	fpsTime += deltaTime;
 	fpsCount++;
@@ -214,6 +293,33 @@ function run()
 	context.fillStyle = "#f00";
 	context.font="14px Arial";
 	context.fillText("FPS: " + fps, 5, 20, 100);
+	var check1 = false;
+	var check2 = false;
+	var check3 = false;
+	var checks = 0;
+	
+	
+
+	
+	
+	if (player.position.x >= TILE * 42) {
+		context.fillStyle = "#f00";
+	context.font="50px Arial";
+	context.fillText("Congratulations you Won", SCREEN_HEIGHT/2, SCREEN_WIDTH/2, 100);
+	
+	
+	
+	}
+	if (mad >= 1280) {
+			context.fillStyle = "#f00";
+	context.font="50px Arial";
+	context.fillText("GAME OVER", SCREEN_HEIGHT/2, SCREEN_WIDTH/2, 100)
+	mad = 0;
+	
+	}
+	
+	
+	
 }
 initialize();
 
